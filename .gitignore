@@ -25,3 +25,6 @@ results/*
 !results/.gitkeep
 experiments/*
 !experiments/.gitkeep
+
+# Personal study materials
+/just personal stuff do not push/
