@@ -1,15 +1,8 @@
-"""P1 — Solo utility iniziali: la sezione 1 e ancora da sviluppare.
-
-Esistono soltanto caricamento Parquet, controlli minimi e codifica delle etichette.
-TODO: analisi, tokenizer shell, rappresentazioni, tempo e gruppi di template.
-Firme suggerite e requisiti in PLAN.md; esperimenti in notebooks/01_data.ipynb.
-"""
-from pathlib import Path
-import numpy as np
+'''P1'''
+import re
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 LABELS = ("Persistence", "Discovery", "Defense Evasion", "Execution", "Impact", "Other", "Harmless")
+SEED = 42
 
 def load_dataset(path):
     df = pd.read_parquet(path)
@@ -28,15 +21,66 @@ def split_tokenize(text: str) -> list[str]:
     return text.split()
 
 
-def heat_map_section2(labels_ts):
-    # share of sessions with each label, per week 'How many sessions (upon 100) contain the lable'
-    #  --> every week goes from Monday to Sunday and is labeled with Sunday
-    weekly_share = labels_ts.resample("W").mean() 
+# Section 1.5 - template groups
+_QUOTED = re.compile(r"'[^']*'|\"[^\"]*\"")   # ' ' | " "
+_DIGITS = re.compile(r"[0-9]+")
 
-    fig, ax = plt.subplots(figsize=(12, 3.5), layout="constrained")
-    sns.heatmap(weekly_share.T, cmap="viridis", vmin=0, vmax=1, ax=ax,
-                cbar_kws={"label": "Share of sessions"},
-                xticklabels=weekly_share.index.strftime("%Y-%m-%d"))
-    ax.set(xlabel="Week", ylabel="", title="Weekly share of sessions with each label")
-    ax.tick_params(axis="x", labelsize=7, rotation=90)
-    plt.show()
+
+def mask_values(texts: pd.Series) -> pd.Series:
+    return texts.str.replace(_QUOTED, "<STR>", regex=True).str.replace(_DIGITS, "<N>", regex=True)
+
+
+def session_templates(texts: pd.Series) -> pd.Series:
+    """Template of each session
+
+    1. quoted strings      -> <STR>   (passwords, credentials)
+    2. numbers             -> <N>     (random numbers in file names)
+    3. words found in only one session of the dataset -> <RARE>  (random tags)
+    """
+    masked = mask_values(texts)
+    words = masked.map(str.split)
+        # -> now in the Series every session is a list of words split by ' '
+
+    # Count in how many sessions each word appears -> {word: number of sessions}
+    sessions_per_word = {}
+    for session in words:
+        distinct_words = set(session)
+        for word in distinct_words:
+            if word in sessions_per_word:
+                sessions_per_word[word] += 1
+            else:
+                sessions_per_word[word] = 1
+
+    # Every word that is not present in more than 1 session is <RARE>
+    return words.map(lambda session: " ".join(
+        w if sessions_per_word[w] > 1 else "<RARE>" for w in session))
+
+
+def template_groups(texts: pd.Series) -> pd.Series:
+    """Group number of each session: same template = same group (0 = largest group)."""
+
+    templates = session_templates(texts)
+
+    # Counting how many sessions have each template -> {template: number of sessions}
+    sessions_per_template = {}
+    for template in templates:
+        if template in sessions_per_template:
+            sessions_per_template[template] += 1
+        else:
+            sessions_per_template[template] = 1
+
+    # Sorting the templates from the most to the least frequent
+    sorted_templates = sorted(sessions_per_template,
+                              key=lambda template: sessions_per_template[template],
+                              reverse=True)
+
+    # Give each template a number: the most frequent becomes group 0 -> {template: group}
+    group_of = {}
+    number = 0
+    for template in sorted_templates:
+        group_of[template] = number
+        number += 1
+
+    # Returns an ordered Series containing the number of group to which each session is part
+    return templates.map(group_of)
+

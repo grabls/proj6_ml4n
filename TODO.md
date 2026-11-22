@@ -5,8 +5,7 @@ utility checks are complete; scientific experiments remain open. PDF section num
 
 ## Come leggere questa checklist
 
-Per **dove scrivere ogni punto del PDF**, stato del codice e **firme suggerite**,
-leggere [PLAN.md](PLAN.md). Le firme e il percorso sono modificabili: qui si spuntano
+Le funzioni e il percorso sono modificabili: qui si spuntano
 risultati dimostrati, non passaggi di una procedura obbligatoria. I numeri delle sezioni
 seguono il PDF. Una utility presente non significa che la sezione sia completata.
 

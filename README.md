@@ -6,8 +6,6 @@ BERT. Algorithms and experimental results are not implemented yet.
 
 ## Da dove iniziare
 
-Leggete prima [PLAN.md](PLAN.md): contiene lo stato reale, la mappa di ogni punto
-della consegna verso modulo/notebook/report e firme di funzioni **suggerite e modificabili**.
 [TODO.md](TODO.md) tiene traccia dei risultati richiesti, non di un ordine obbligatorio.
 
 **Le sezioni 1 e 2 non sono svolte:** `data.py` contiene solo caricamento/codifica
@@ -27,9 +25,8 @@ funzioni, metodi e percorso di sviluppo, coordinando gli output usati dagli altr
 | P3 — Behavioral clustering | `src/clustering.py` | `notebooks/03_clustering.ipynb` |
 | P4 — Contextual models | `src/bert.py` | `notebooks/04_bert.ipynb` |
 
-`data/` holds private data; `tests/test_basic.py` checks the initial utilities.
-`report/README.md` explains report preparation. The original assignment PDF is at
-the repository root. `PLAN.md` gives the six-week provisional roadmap; `TODO.md`
+`data/` holds private data. `report/README.md` explains report preparation.
+The original assignment PDF is at the repository root. `TODO.md`
 is the requirement checklist. Owners update their tasks with evidence of completion.
 
 ## Install and run
