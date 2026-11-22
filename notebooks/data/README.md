@@ -20,5 +20,3 @@ stringhe se il formato reale non lo richiede. Mancante non significa insieme vuo
 Le annotazioni automatiche sono un benchmark fisso: riportare accordo col riferimento,
 separando sospetti errori senza modificarlo silenziosamente. Harmless non indica
 che la sessione complessiva sia benigna. ID e ordine LABELS devono essere preservati.
-
-Per la divisione del lavoro e le funzioni suggerite leggere PLAN.md.

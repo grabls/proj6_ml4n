@@ -26,7 +26,7 @@ file was hash-verified before its original was replaced. The archive preserves t
   annotation encoding still requires inspection of the real file.
 - Protocols, dataclasses, typed configuration hierarchy, YAMLs, mock pipeline,
   duplicate interface stubs and smoke scripts were removed from the active layout.
-- Five architecture documents were consolidated into README, PLAN and TODO.
+- Five architecture documents were consolidated into README and TODO.
 - Four notebooks were rebuilt with assignment-specific experiment TODOs and no outputs.
 - Six test/fixture files were replaced by one minimal suite for retained behavior.
 - Old detailed contract tests remain in the backup; their container APIs are retired.
@@ -59,7 +59,6 @@ C:/Users/camma/.codex/visualizations/2026/11/03/01a1a11c-9181-79d0-80c1-64c69e40
 
 ## Audit di comprensibilita
 
-PLAN.md ora mappa tutti i punti del PDF ai file e propone firme modificabili.
 README, docstring e notebook distinguono utility gia presenti da sezioni ancora
 interamente da sviluppare. La checklist riguarda risultati, non un ordine obbligatorio.
 Il dataset e ora presente; metadati verificati: 233.035 righe, quattro colonne,
